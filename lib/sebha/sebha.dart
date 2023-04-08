@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islami/providers/settings_providers.dart';
 import 'package:provider/provider.dart';
+import 'dart:math' as maths;
 
 class SebhaTab extends StatefulWidget {
   const SebhaTab({super.key});
@@ -10,9 +11,15 @@ class SebhaTab extends StatefulWidget {
 }
 
 class _SebhaState extends State<SebhaTab> {
+  double angle = 0;
   static int tasbeh = 0;
-  static int showinTasbeh = 0;
-  static String tasbeha = "الله أكبر";
+  int index = 0;
+  static List<String> tasbeha = [
+    "الله أكبر",
+    "سبحان الله",
+    "الحمدلله",
+    "لا إاله إلا الله"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +27,37 @@ class _SebhaState extends State<SebhaTab> {
     return Column(
       children: [
         Expanded(
-            flex: 4,
+            flex: 5,
             child: Center(
-              child: Image.asset(
-                  settingsProvider.currentTheme == ThemeMode.light
-                      ? 'assets/images/sebha_image.png'
-                      : 'assets/images/sebha_image_dark.png'),
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Image.asset(settingsProvider.currentTheme == ThemeMode.light
+                      ? 'assets/images/head_of_seb7a.png'
+                      : 'assets/images/head_of_seb7a_dark.png'),
+                  GestureDetector(
+                    onTap: tasbehfun,
+                    child: Transform.rotate(
+                      angle: maths.pi / 100 * angle,
+                      child: Padding(
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.height * .1),
+                        child: Image.asset(
+                            settingsProvider.currentTheme == ThemeMode.light
+                                ? 'assets/images/body_of_seb7a.png'
+                                : 'assets/images/body_of_seb7a_dark.png'),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             )),
         Expanded(
           flex: 3,
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(1),
                 child: Text(
                   'عدد التسبيحات ',
                   style: Theme.of(context).textTheme.titleLarge,
@@ -47,7 +72,7 @@ class _SebhaState extends State<SebhaTab> {
                 ),
                 child: Center(
                     child: Text(
-                  '$showinTasbeh',
+                  '$tasbeh',
                   style: Theme.of(context).textTheme.titleLarge,
                 )),
               ),
@@ -58,28 +83,9 @@ class _SebhaState extends State<SebhaTab> {
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25))),
-                  onPressed: () {
-                    setState(() {
-                      if (showinTasbeh == 33) {
-                        showinTasbeh = 0;
-                      }
-                      if (tasbeh >= 33 && tasbeh < 66) {
-                        tasbeha = 'سبحان الله';
-                      } else if (tasbeh >= 66 && tasbeh < 99) {
-                        tasbeha = 'الحمدلله';
-                      } else if (tasbeh == 99) {
-                        tasbeha = 'لا إاله إالا الله';
-                        tasbeh = 0;
-                        showinTasbeh = 0;
-                      } else if (tasbeh < 33) {
-                        tasbeha = 'الله أكبر';
-                      }
-                      tasbeh++;
-                      showinTasbeh++;
-                    });
-                  },
+                  onPressed: tasbehfun,
                   child: Text(
-                    tasbeha,
+                    tasbeha[index],
                     style: const TextStyle(
                         fontSize: 25, fontWeight: FontWeight.bold),
                   ),
@@ -90,5 +96,19 @@ class _SebhaState extends State<SebhaTab> {
         )
       ],
     );
+  }
+
+  void tasbehfun() {
+    setState(() {
+      tasbeh++;
+      angle += 100 / 3;
+      if (tasbeh % 34 == 0) {
+        index++;
+        tasbeh = 0;
+      }
+      if (index == tasbeha.length) {
+        index = 0;
+      }
+    });
   }
 }
