@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:islami/providers/settings_providers.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as maths;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SebhaTab extends StatefulWidget {
   const SebhaTab({super.key});
@@ -59,7 +60,7 @@ class _SebhaState extends State<SebhaTab> {
               Padding(
                 padding: const EdgeInsets.all(1),
                 child: Text(
-                  'عدد التسبيحات ',
+                  AppLocalizations.of(context)!.tasbeh_counter,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
