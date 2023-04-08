@@ -9,6 +9,8 @@
     "theme" : "المظهر",
     "language" : "اللغة",
     "dark" : "غامق",
-    "light" : "فاتح"
+    "light" : "فاتح",
+    "tasbeh_counter":"عدد التسبيحات"
+
 
 }
